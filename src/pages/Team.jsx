@@ -1,3 +1,6 @@
+import Image from "../components/Image";
+import { TransitionLink } from "../components/TransitionProvider";
+
 export default function Team() {
   const teamMembers = {
     leadership: [
@@ -29,10 +32,15 @@ export default function Team() {
 
   const MemberCard = ({ member }) => (
     <div className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
-      <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-        <span className="text-2xl text-white font-bold">
-          {member.name.split(' ').map(n => n[0]).join('')}
-        </span>
+      <div className="w-28 h-28 rounded-full overflow-hidden mx-auto mb-4 bg-gray-100">
+        <Image
+          src="/logo.jpg"
+          alt={member.name}
+          width={112}
+          height={112}
+          className="h-28 w-28 object-cover"
+          sources={[]}
+        />
       </div>
       <h3 className="text-xl font-semibold text-gray-900 mb-1">{member.name}</h3>
       <p className="text-blue-600 font-medium mb-2">{member.role}</p>
@@ -170,12 +178,12 @@ export default function Team() {
           <p className="text-xl mb-8 text-blue-100">
             We're always looking for passionate individuals to join our mission
           </p>
-          <a 
-            href="/contact" 
+          <TransitionLink 
+            to="/contact" 
             className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition-colors inline-block"
           >
             Get in Touch
-          </a>
+          </TransitionLink>
         </div>
       </section>
     </div>

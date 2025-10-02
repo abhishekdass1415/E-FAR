@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { TransitionLink } from "./TransitionProvider";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const [hideOnScroll, setHideOnScroll] = useState(false);
+  const location = useLocation();
 
   // Hide navbar after user scrolls down; show again when back at top
   useEffect(() => {
@@ -27,14 +28,24 @@ export default function Navbar() {
         </Link>
 
         {/* Menu (always present in navbar; scrollable on small screens) */}
-        <div className="flex space-x-6 sm:space-x-8 font-medium overflow-x-auto whitespace-nowrap px-2">
-          <TransitionLink to="/" className="hover:text-yellow-400">Home</TransitionLink>
-          <TransitionLink to="/about" className="hover:text-yellow-400">About</TransitionLink>
-          <TransitionLink to="/team" className="hover:text-yellow-400">Team</TransitionLink>
-          <TransitionLink to="/cars" className="hover:text-yellow-400">Cars</TransitionLink>
-          <TransitionLink to="/achievements" className="hover:text-yellow-400">Achievements</TransitionLink>
-          <TransitionLink to="/sponsors" className="hover:text-yellow-400">Sponsors</TransitionLink>
-          <TransitionLink to="/contact" className="hover:text-yellow-400">Contact</TransitionLink>
+        <div className="relative flex space-x-6 sm:space-x-8 font-medium overflow-x-auto whitespace-nowrap px-2">
+          {[
+            { href: "/", label: "Home" },
+            { href: "/about", label: "About" },
+            { href: "/team", label: "Team" },
+            { href: "/cars", label: "Cars" },
+            { href: "/achievements", label: "Achievements" },
+            { href: "/sponsors", label: "Sponsors" },
+            { href: "/contact", label: "Contact" },
+          ].map((item) => {
+            const isActive = location.pathname === item.href;
+            return (
+              <span key={item.href} className="relative">
+                <TransitionLink to={item.href} className={`hover:text-yellow-400 ${isActive ? "text-yellow-400" : ""}`}>{item.label}</TransitionLink>
+                {isActive && (<span className="absolute -bottom-2 left-0 right-0 h-0.5 bg-yellow-400" />)}
+              </span>
+            );
+          })}
         </div>
       </div>
     </nav>

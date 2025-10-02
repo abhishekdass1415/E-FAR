@@ -1,12 +1,38 @@
 import { Link } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import { TransitionLink } from "../components/TransitionProvider";
 
 export default function Home() {
+    const heroRef = useRef(null);
+    const headlineRef = useRef(null);
+
+    useEffect(() => {
+      const el = heroRef.current;
+      if (!el) return;
+      const onScroll = () => {
+        const y = window.scrollY;
+        const parallax = Math.min(40, y * 0.2);
+        el.style.backgroundPosition = `center calc(50% + ${parallax}px)`;
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    useEffect(() => {
+      // quick light sweep on headline when page mounts
+      const hl = headlineRef.current;
+      if (!hl) return;
+      hl.classList.add('animate-[shine_1s_ease-in-out]');
+      const t = setTimeout(() => hl.classList.remove('animate-[shine_1s_ease-in-out]'), 1100);
+      return () => clearTimeout(t);
+    }, []);
+
     return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <section
-        className="relative text-white py-20"
+        ref={heroRef}
+        className="relative text-white py-24 sm:py-28 will-change-[background-position]"
         style={{
           backgroundImage: "url('/E-FAR Background image.png')",
           backgroundSize: 'cover',
@@ -15,11 +41,12 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-blue-900/60" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            E-Formula Ashwa Riders
+          <h1 ref={headlineRef} className="relative text-5xl md:text-7xl font-bold mb-6 overflow-hidden">
+            <span className="relative z-10">E-Formula Ashwa Riders</span>
+            <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full [mask-image:linear-gradient(90deg,transparent,black,transparent)]"></span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-300">
-            Racing Towards a Sustainable Future
+            Engineering the future of Formula Student EVs
           </p>
           <p className="text-lg mb-12 max-w-3xl mx-auto text-gray-400">
             We are a passionate team of engineering students dedicated to designing, 
@@ -30,14 +57,14 @@ export default function Home() {
               to="/about" 
               className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
             >
-              Learn More
+              Learn More About Us
             </TransitionLink>
-            <Link 
-              to="/cars" 
+            <TransitionLink 
+              to="/achievements" 
               className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-3 rounded-lg font-semibold transition-colors"
             >
-              View Our Cars
-            </Link>
+              Explore Achievements
+            </TransitionLink>
           </div>
         </div>
       </section>
@@ -46,8 +73,8 @@ export default function Home() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">About Our Team</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">About Our Team</h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-8">
               Founded with a vision to revolutionize electric vehicle technology, 
               E-Formula Ashwa Riders represents the next generation of automotive innovation.
             </p>
@@ -93,8 +120,8 @@ export default function Home() {
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Formula Cars</h2>
-            <p className="text-xl text-gray-600">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Formula Cars</h2>
+            <p className="text-lg md:text-xl text-gray-600">
               Discover our latest electric racing machines
             </p>
           </div>

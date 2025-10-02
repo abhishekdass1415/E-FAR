@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 export default function Achievements() {
   const items = [
     { year: 2024, title: '1st Place - Design Event', where: 'Formula Student India', icon: '🥇' },
@@ -17,10 +19,33 @@ export default function Achievements() {
       <section className="py-16 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative">
+            {/* Featured top milestone */}
+            <motion.div
+              className="mb-10 rounded-xl border bg-gradient-to-r from-yellow-50 to-white p-6 shadow-sm"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex items-center gap-4">
+                <span className="text-4xl">{items[0].icon}</span>
+                <div>
+                  <h3 className="text-2xl font-semibold text-gray-900">{items[0].title}</h3>
+                  <p className="text-gray-600">{items[0].where} — {items[0].year}</p>
+                </div>
+              </div>
+            </motion.div>
             <div className="hidden sm:block absolute left-1/2 -translate-x-1/2 w-1 bg-gray-200 h-full" />
             <div className="space-y-8">
               {items.map((it, idx) => (
-                <div key={idx} className="grid sm:grid-cols-2 gap-8 items-center">
+                <motion.div
+                  key={idx}
+                  className="grid sm:grid-cols-2 gap-8 items-center"
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.45, delay: idx * 0.05 }}
+                >
                   <div className={`sm:text-right ${idx % 2 === 0 ? 'order-none' : 'order-last'}`}>
                     <div className="inline-block bg-gray-100 rounded-full px-4 py-2 text-gray-700 font-medium">
                       {it.year}
@@ -35,7 +60,7 @@ export default function Achievements() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
